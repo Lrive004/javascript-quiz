@@ -1,0 +1,14 @@
+#quiz-container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+}
+
+.hide {
+    display: none;
+}
+
+#options button {
+    display: block;
+    margin: 10px auto;
+}
