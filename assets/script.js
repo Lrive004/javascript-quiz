@@ -108,6 +108,6 @@ var questions = [
         highScores.push({ initials: userInitials, score: score });
         localStorage.setItem('highScores', JSON.stringify(highScores));
         
-        window.location.href = 'highscores.html';
+        window.location.href = 'scores.html';
 
     }
