@@ -38,3 +38,76 @@ var questions = [
         },
     
     ];
+
+    startBtn.addEventListener('click', startQuiz);
+    submitBtn.addEventListener('click', saveScore);
+
+    function startQuiz() {
+        startBtn.parentNode.classList.add('hide');
+        questionContainer.classList.remove('hide');
+        showQuestion();
+        startTimer();
+    }
+
+    function showQuestion() {
+        var currentQuestion = questions[currentQuestionIndex];
+        document.getElementById('question').textContent = currentQuestion.question;
+
+        var optionsContainer = document.getElementById('options');
+        optionsContainer.innerHTML = '';
+
+        currentQuestion.options.forEach((option) => {
+            var button = document.createElement('button');
+            button.textContent = option;
+            button.addEventListener('click', () => checkAnswer(option));
+            optionsContainer.appendChild(button);
+        });
+    }
+
+    function checkAnswer(answer) {
+        var currentQuestion = questions[currentQuestionIndex];
+
+        if (answer === currentQuestion.correctAnswer) {
+            score++;
+        } else {
+            timeLeft -= 10;
+        }
+
+        currentQuestionIndex++;
+
+        if (currentQuestionIndex < questions.length) {
+            showQuestion();
+        } else {
+            endQuiz();
+        }
+    }
+
+    function startTimer() {
+        var timerInterval = setInterval(() => {
+            timeEl.textContent = "Timer: " + timeLeft;
+            if (timeLeft > 0) {
+                timeLeft--;
+            } else {
+                clearInterval(timerInterval);
+                endQuiz();
+            }
+        }, 1000);
+    }
+
+    function endQuiz() {
+        clearInterval();
+        questionContainer.classList.add('hide');
+        endScreen.classList.remove('hide');
+        finalScore.textContent = score;
+    }
+
+    function saveScore() {
+        var userInitials = initialsInput.value.trim();
+        var highScores = JSON.parse(localStorage.getItem('highScores')) || [];
+
+        highScores.push({ initials: userInitials, score: score });
+        localStorage.setItem('highScores', JSON.stringify(highScores));
+        
+        window.location.href = 'highscores.html';
+
+    }
